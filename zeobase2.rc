@@ -1,0 +1,85 @@
+// Copyright 2013 Peter Wallström
+//
+// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software distributed under the License is
+// distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and limitations under the License.
+
+// while it is not required i like to request a few things
+// 1. please do share any meaningfull/usefull changes/additions/fixes you make with me so that i could include it in any future version
+// 2. likewise do share any ideas for improvements
+// 3. If you make something comersiol or at least something you release publicly that relies on this code then i would like to know and maybe use in my CV
+// 4. Please do include me in your credits
+
+// glz basecode resource file - the only real thing this is used for is the aplication icons, i really don't have a clue what everything else does
+// visit http://www.flashbang.se or contact me at overlord@flashbang.se
+// the entire toolkit should exist in it's entirety at github
+// git:// [future home of github link]
+
+//Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+
+IDI_ZEOBASE2		    ICON         "zeobase2.ico"
+IDI_SMALL               ICON         "small.ico"
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDC_ZEOBASE2 ACCELERATORS
+BEGIN
+    "?",            IDM_ABOUT,              ASCII,  ALT
+    "/",            IDM_ABOUT,              ASCII,  ALT
+END
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+   IDC_ZEOBASE2			"ZEOBASE2"
+   IDS_APP_TITLE		"zeobase2"
+END
+
+#endif
+/////////////////////////////////////////////////////////////////////////////
+
