@@ -30,9 +30,9 @@
 #include <gl/wglext.h>
 #include <fstream>
 #include <windowsx.h>
-#include "..\glz-core\appbase.h"
-#include "..\glz-core\input\input.h"
-#include "..\glz-core\state\stateManager.h"
+#include "..\..\glz-core\app\appbase.h"
+#include "..\..\glz-core\input\input.h"
+#include "..\..\glz-core\state\stateManager.h"
 
 #pragma comment( lib, "opengl32.lib" )							// Search For OpenGL32.lib While Linking
 #pragma comment( lib, "glu32.lib" )								// Search For GLu32.lib While Linking

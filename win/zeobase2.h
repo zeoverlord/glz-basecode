@@ -23,7 +23,7 @@
 
 #include "resource.h"
 #include <wchar.h>
-#include "..\glz-core\state\baseState.h"
+#include "..\..\glz-core\state\baseState.h"
 
 
 typedef struct {									// Contains Information Vital To Applications
