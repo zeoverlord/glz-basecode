@@ -55,7 +55,7 @@ TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
 
 GL_Window window;
 
-glzStateManager stateManager;
+GLZ::glzStateManager stateManager;
 
 void TerminateApplication()							// Terminate The Application
 {
@@ -65,7 +65,7 @@ void TerminateApplication()							// Terminate The Application
 
 void ToggleFullscreen()								// Toggle Fullscreen/Windowed
 {
-	glzAppinitialization app;
+	GLZ::glzAppinitialization app;
 	if (app.data.ALLOW_FULLSCREENSWITCH)
 		PostMessage (window.hWnd, WM_TOGGLEFULLSCREEN, 0, 0);				// Send A WM_TOGGLEFULLSCREEN Message
 }
@@ -96,7 +96,7 @@ BOOL ChangeScreenResolution (int width, int height, int bitsPerPixel)	// Change 
 BOOL CreateWindowGL ()									// This Code Creates Our OpenGL Window
 {
 	
-  glzAppinitialization app;
+  GLZ::glzAppinitialization app;
   PIXELFORMATDESCRIPTOR pfd;
   memset(&pfd, 0, sizeof(PIXELFORMATDESCRIPTOR));
   pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
@@ -318,8 +318,8 @@ BOOL DestroyWindowGL ()								// Destroy The OpenGL Window & Release Resources
 // Process Window Message Callbacks
 LRESULT CALLBACK WindowProc (HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	glzAppinitialization app;
-	glzInput input;
+	GLZ::glzAppinitialization app;
+	GLZ::glzInput input;
 	
 	// Get The Window Context
 	//GL_Window* window = (GL_Window*)(GetWindowLong (hWnd, GWL_USERDATA));
@@ -468,7 +468,7 @@ LRESULT CALLBACK WindowProc (HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 BOOL RegisterWindowClass (Application* application)						// Register A Window Class For This Application.
 {																		// TRUE If Successful
 	// Register A Window Class
-	glzAppinitialization app;
+	GLZ::glzAppinitialization app;
 
 	WNDCLASSEX windowClass;												// Window Class
 	ZeroMemory (&windowClass, sizeof (WNDCLASSEX));						// Make Sure Memory Is Cleared
@@ -492,8 +492,8 @@ BOOL RegisterWindowClass (Application* application)						// Register A Window Cl
 int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
 
-	glzAppinitialization app;
-	glzInput input;
+	GLZ::glzAppinitialization app;
+	GLZ::glzInput input;
 	
 	preInitialize();
 	//	app.pull();
