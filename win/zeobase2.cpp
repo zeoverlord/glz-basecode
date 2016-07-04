@@ -282,6 +282,9 @@ BOOL CreateWindowGL ()									// This Code Creates Our OpenGL Window
 	
 	window.lastTickCount = GetTickCount ();							// Get Tick Count
 
+	app.data.hWnd = window.hWnd;
+	app.data.hDC = window.hDC;
+	app.data.hRC = window.hRC;
 
 	return TRUE;														// Window Creating Was A Success
 																		// Initialization Will Be Done In WM_CREATE
