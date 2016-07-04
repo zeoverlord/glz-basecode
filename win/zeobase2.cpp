@@ -277,8 +277,12 @@ BOOL CreateWindowGL ()									// This Code Creates Our OpenGL Window
 
 	wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC) wglGetProcAddress("wglSwapIntervalEXT");
 
-	if (app.data.ENABLE_VSYNC) wglSwapIntervalEXT(1);
-	else wglSwapIntervalEXT(0);
+	if (wglSwapIntervalEXT != NULL)
+	{
+		if (app.data.ENABLE_VSYNC) wglSwapIntervalEXT(1);
+		else wglSwapIntervalEXT(0);
+	}
+	
 	
 	window.lastTickCount = GetTickCount ();							// Get Tick Count
 
