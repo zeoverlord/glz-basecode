@@ -215,7 +215,15 @@ BOOL CreateWindowGL ()									// This Code Creates Our OpenGL Window
 
 	HGLRC tempContext = wglCreateContext(window.hDC);
 	wglMakeCurrent(window.hDC,tempContext);
-	
+
+	const char* version = (const char*)glGetString(GL_VERSION);
+
+	if (version[0] == '2')
+	{
+		app.data.legacyMode = true;
+		app.data.FORCE_OPENGL_VERSION = false;
+	}
+		
 	PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB;
 	wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC) wglGetProcAddress("wglCreateContextAttribsARB");
 
