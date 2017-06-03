@@ -34,8 +34,10 @@ typedef struct {									// Contains Information Vital To Applications
 typedef struct {									// Window Creation Info
 	Application*		application;				// Application Structure
 	LPCWSTR				title;						// Window Title
-	int					width;						// Width
-	int					height;						// Height
+	int					windowWidth;						// Width
+	int					windowHeight;						// Height
+	int					screenWidth;						// Width
+	int					screenHeight;						// Height
 	int					bitsPerPixel;				// Bits Per Pixel
 	BOOL				isFullScreen;				// FullScreen?
 } GL_WindowInit;									// GL_WindowInit

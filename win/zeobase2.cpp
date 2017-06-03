@@ -93,7 +93,7 @@ BOOL ChangeScreenResolution (int width, int height, int bitsPerPixel)	// Change 
 	return TRUE;														// Display Change Was Successful, Return True
 }
 
-BOOL CreateWindowGL ()									// This Code Creates Our OpenGL Window
+BOOL CreateWindowGL()									// This Code Creates Our OpenGL Window
 {
 	
   GLZ::glzAppinitialization app;
@@ -108,7 +108,7 @@ BOOL CreateWindowGL ()									// This Code Creates Our OpenGL Window
   pfd.cColorBits = 32;                // 32 bits colors
 
 
-	RECT windowRect = {0, 0, window.init.width, window.init.height};	// Define Our Window Coordinates
+  RECT windowRect = { 0, 0, window.init.windowWidth, window.init.windowHeight };	// Define Our Window Coordinates
 
 	int x=0,y=0;
 	GLuint PixelFormat;													// Will Hold The Selected Pixel Format
@@ -130,7 +130,7 @@ BOOL CreateWindowGL ()									// This Code Creates Our OpenGL Window
 
 	if (window.init.isFullScreen == TRUE)								// Fullscreen Requested, Try Changing Video Modes
 	{
-		if (ChangeScreenResolution (window.init.width, window.init.height, window.init.bitsPerPixel) == FALSE)
+		if(ChangeScreenResolution(window.init.screenWidth, window.init.screenHeight, window.init.bitsPerPixel) == FALSE)
 		{
 			// Fullscreen Mode Failed.  Run In Windowed Mode Instead
 			if (app.data.DISPLAY_ERRORS) MessageBox(HWND_DESKTOP, L"Mode Switch Failed.\nRunning In Windowed Mode.", L"Error", MB_OK | MB_ICONEXCLAMATION);
@@ -279,7 +279,7 @@ BOOL CreateWindowGL ()									// This Code Creates Our OpenGL Window
 	ShowWindow (window.hWnd, SW_SHOW);								// Make The Window Visible
 	window.isVisible = TRUE;											// Set isVisible To True
 
-	ReshapeGL (window.init.width, window.init.height);				// Reshape Our GL Window
+	ReshapeGL (window.init.windowWidth, window.init.windowHeight);				// Reshape Our GL Window
 
 	PFNWGLSWAPINTERVALEXTPROC       wglSwapIntervalEXT = NULL;
 
@@ -445,27 +445,27 @@ LRESULT CALLBACK WindowProc (HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 			if (g_createFullScreen== TRUE)							
 			{
-				window.init.width = app.data.FULLSCREEN_WIDTH;						// Window Width
-				window.init.height = app.data.FULLSCREEN_HEIGHT;					// Window Height
+				window.init.windowWidth = app.data.FULLSCREEN_WIDTH;						// Window Width
+				window.init.windowHeight = app.data.FULLSCREEN_HEIGHT;					// Window Height
 
 				ShowCursor (FALSE);										// Turn Off The Cursor
 				
 				SetWindowLong(hWnd,GWL_EXSTYLE,WS_EX_TOPMOST);			// places the window so it is allways on top
-				ChangeScreenResolution (window.init.width, window.init.height, window.init.bitsPerPixel);	// changes the screen resolution to set values
-				SetWindowPos(hWnd,HWND_TOPMOST,0,0,window.init.width,window.init.height,SWP_NOZORDER);
+				ChangeScreenResolution(window.init.screenWidth, window.init.screenHeight, window.init.bitsPerPixel);	// changes the screen resolution to set values
+				SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, window.init.windowWidth, window.init.windowHeight, SWP_NOZORDER);
 				
 
 			}														
 			else
 			{	
 				
-				window.init.width = app.data.WINDOW_WIDTH;						// Window Width
-				window.init.height = app.data.WINDOW_HEIGHT;					// Window Height
+				window.init.windowWidth = app.data.WINDOW_WIDTH;						// Window Width
+				window.init.windowHeight = app.data.WINDOW_HEIGHT;					// Window Height
 				ShowCursor (TRUE);										// Turn On The Cursor
 
 				SetWindowLong(hWnd,GWL_EXSTYLE,WS_EX_APPWINDOW);		// returns the window back to normalcy
 				ChangeDisplaySettings (NULL,0);							// returns to the default screen resolution
-				SetWindowPos(hWnd,HWND_TOPMOST,window.x,window.y,window.init.width,window.init.height,SWP_NOZORDER);
+				SetWindowPos(hWnd, HWND_TOPMOST, window.x, window.y, window.init.windowWidth, window.init.windowHeight, SWP_NOZORDER);
 
 				stateManager.Draw();
 			}
@@ -527,29 +527,44 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCm
 	application.className = L"OpenGL";									// Application Class Name
 	application.hInstance = hInstance;									// Application Instance
 
+	DEVMODE devMode = { 0 };
+	devMode.dmSize = sizeof(devMode);
+
+	EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &devMode);			// this bit of code gets the current display settings
 
 	// Fill Out Window
 	ZeroMemory (&window, sizeof (GL_Window));							// Make Sure Memory Is Zeroed
 //	window.keys					= &keys;								// Window Key Structure
 	window.init.application		= &application;							// Window Application
 	window.init.title = app.data.WINDOW_TITLE;							// Window Title
-	window.init.width = app.data.FULLSCREEN_WIDTH;						// Window Width
-	window.init.height = app.data.FULLSCREEN_HEIGHT;					// Window Height
+	window.init.windowWidth = app.data.FULLSCREEN_WIDTH;						// Window Width
+	window.init.windowHeight = app.data.FULLSCREEN_HEIGHT;					// Window Height
+	window.init.screenWidth = (int)devMode.dmPelsWidth;						// Window Width
+	window.init.screenHeight = (int)devMode.dmPelsHeight;					// Window Height
 	window.init.bitsPerPixel = 32;									// Bits Per Pixel
 	window.init.isFullScreen = true;								// Fullscreen? (Set To TRUE)
 	window.x = 0;									// x position of window
 	window.y = 0;									// y position of window
-
 		
-	DEVMODE devMode = {0};
-	devMode.dmSize = sizeof(devMode);
+	app.data.WINDOW_GUI_SCALING_X = (float)devMode.dmPelsWidth / (float)GetSystemMetrics(SM_CXSCREEN);
+	app.data.WINDOW_GUI_SCALING_Y = (float)devMode.dmPelsHeight / (float)GetSystemMetrics(SM_CYSCREEN);
 
-	EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &devMode);			// this bit of code gets the current display settings
+	app.push();
 
 	if (app.data.NATIVE_FULLSCREEN) // normally better than to force a fixed resolution, but do make sure your app likes running att different resolutions
 	{
-		window.init.width = (int)devMode.dmPelsWidth;					// Window Width
-		window.init.height = (int)devMode.dmPelsHeight;					// Window Height
+		window.init.windowWidth = GetSystemMetrics(SM_CXSCREEN);					// Window Width
+		window.init.windowHeight = GetSystemMetrics(SM_CYSCREEN);					// Window Height
+		window.init.screenWidth = (int)devMode.dmPelsWidth;					// Window Width
+		window.init.screenHeight = (int)devMode.dmPelsHeight;					// Window Height
+
+	}
+	else
+	{
+		window.init.windowWidth = GetSystemMetrics(SM_CXSCREEN);					// Window Width
+		window.init.windowHeight = GetSystemMetrics(SM_CYSCREEN);					// Window Height
+		window.init.screenWidth = window.init.windowWidth;					// Window Width
+		window.init.screenHeight = window.init.windowHeight;					// Window Height
 
 	}
 
@@ -558,14 +573,13 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCm
 		window.init.isFullScreen = false;
 		window.x = app.data.WINDOW_X;												// x position of window
 		window.y = app.data.WINDOW_Y;												// y position of window	
-		window.init.width = app.data.WINDOW_WIDTH;						// Window Width
-		window.init.height = app.data.WINDOW_HEIGHT;					// Window Height
+		window.init.windowWidth = app.data.WINDOW_WIDTH;						// Window Width
+		window.init.windowHeight = app.data.WINDOW_HEIGHT;					// Window Height
 
 		if (app.data.START_CENTERED)  // this is a pretty good choice for windowed games
 		{	
-
-			window.x = (devMode.dmPelsWidth / 2) - (app.data.WINDOW_WIDTH / 2);									// x position of window
-			window.y = (devMode.dmPelsHeight / 2) - (app.data.WINDOW_HEIGHT / 2);									// y position of window
+			window.x = (GetSystemMetrics(SM_CXSCREEN) / 2) - (app.data.WINDOW_WIDTH / 2);									// x position of window
+			window.y = (GetSystemMetrics(SM_CYSCREEN) / 2) - (app.data.WINDOW_HEIGHT / 2);									// y position of window
 
 		}		
 	}
@@ -588,14 +602,14 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCm
 		if (CreateWindowGL() == TRUE)							// Was Window Creation Successful?
 		{
 			// At This Point We Should Have A Window That Is Setup To Render OpenGL
-			if(!stateManager.Initialize(window.init.width, window.init.height))					// Call User Intialization
+			if(!stateManager.Initialize(window.init.windowWidth, window.init.windowHeight))					// Call User Intialization
 			{
 				// Failure
 				TerminateApplication();							// Close Window, This Will Handle The Shutdown
 			}
 			else														// Otherwise (Start The Message Pump)
 			{	// Initialize was a success
-				stateManager.DisplayUpdate(window.init.width, window.init.height);
+				stateManager.DisplayUpdate(window.init.windowWidth, window.init.windowHeight);
 				isMessagePumpActive = TRUE;								// Set isMessagePumpActive To TRUE
 				while (isMessagePumpActive == TRUE)						// While The Message Pump Is Active
 				{
