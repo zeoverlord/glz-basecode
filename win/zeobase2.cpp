@@ -664,7 +664,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCm
 
 			// Application Is Finished
 			stateManager.Deinitialize();											// User Defined DeInitialization
-
+			
 			DestroyWindowGL();									// Destroy The Active Window
 		}
 		else															// If Window Creation Failed
